@@ -1,5 +1,6 @@
 use std::{fs::File, io::Read};
 
+const PART: &str = "part2";
 const FIELDS: [&str; 7] = ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"];
 pub fn solve(mut input: File) -> u32 {
   let mut input_str = String::new();
@@ -13,7 +14,7 @@ pub fn solve(mut input: File) -> u32 {
     .map(|s| s.to_string())
     .collect();
 
-  return part2(input);
+  return if PART == "part1" { part1(input) } else { part2(input) };
 }
 
 fn part1(input: Vec<String>) -> u32 {
@@ -44,7 +45,7 @@ fn part1(input: Vec<String>) -> u32 {
 // cid (Country ID) - ignored, missing or not. Already known.
 fn part2(input: Vec<String>) -> u32 {
   // O(n * 7) which is just O(n)
-  let mut res: u32 = 0;
+  let res: u32 = 0;
   for passport in &input {
     // let single_line = passport.replace('\n', " ");
     // println!("{}", single_line);

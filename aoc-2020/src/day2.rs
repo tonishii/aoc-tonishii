@@ -1,5 +1,6 @@
 use std::{fs::File, io::Read};
 
+const PART: &str = "part2";
 pub fn solve(mut input: File) -> u32 {
   let mut input_str = String::new();
   input
@@ -30,6 +31,10 @@ pub fn solve(mut input: File) -> u32 {
     })
     .collect();
 
+  return if PART == "part1" { part1(input) } else { part2(input) };
+}
+
+fn part1(input: Vec<(u32, u32, char, String)>) -> u32 {
   // O(n * k) where k is the length of a password
   let mut res: u32 = 0;
   for (start, end, letter, password) in input {
@@ -46,5 +51,22 @@ pub fn solve(mut input: File) -> u32 {
   }
 
   // Function completes in O(n * k) where k is the length of a password
+  return res;
+}
+
+fn part2(input: Vec<(u32, u32, char, String)>) -> u32 {
+  // O(n)
+  let mut res: u32 = 0;
+  for (start, end, letter, password) in input {
+    let chars: Vec<char> = password.chars().collect();
+    let start_letter = chars[(start - 1) as usize];
+    let end_letter = chars[(end - 1) as usize];
+
+    if (start_letter == letter || end_letter == letter) && start_letter != end_letter {
+      res += 1;
+    }
+  }
+
+  // Function completes in O(n)
   return res;
 }
