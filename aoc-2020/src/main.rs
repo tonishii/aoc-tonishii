@@ -1,17 +1,15 @@
 use std::fs::File;
 
-use crate::day5::bsearch;
-
-
 mod day1;
 mod day2;
 mod day3;
 mod day4;
 mod day5;
+mod day6;
 
 #[allow(dead_code)]
 fn main() {
-  let day = "day5";
+  let day = "day6";
   let input =
     File::open(format!("./inputs/{day}.txt"))
     .expect("Path not found.");
@@ -27,6 +25,7 @@ fn main() {
     "day3" => ResultType::U64(day3::solve(input)),
     "day4" => ResultType::U32(day4::solve(input)),
     "day5" => ResultType::U64(day5::solve(input)),
+    "day6" => ResultType::U64(day6::solve(input)),
     _ => panic!("Day does not exist!"),
   };
 
