@@ -7,6 +7,7 @@ pub fn solve(mut input: File) -> u32 {
     .read_to_string(&mut input_str)
     .expect("Failed to read the string.");
 
+  // Parsing each line: O(n)
   let input: Vec<u32> = input_str
     .lines()
     .map(|v| v.parse().unwrap())
@@ -16,6 +17,7 @@ pub fn solve(mut input: File) -> u32 {
 }
 
 pub fn part1(input: Vec<u32>) -> u32 {
+  // O(n)
   let mut res: u32 = 0;
   let mut prev: u32 = 0;
   for (i, &depths) in input.iter().enumerate() {
@@ -28,13 +30,14 @@ pub fn part1(input: Vec<u32>) -> u32 {
     prev = depths;
   }
 
+  // Function completes in O(n)
   return res;
 }
 
 pub fn part2(input: Vec<u32>) -> u32 {
+  // O(3n) which is just O(n)
   let mut res: u32 = 0;
   let mut prev: u32 = 0;
-
   for i in 0..(input.len() - 2) {
     let mut curr: u32 = 0;
     for j in i..i+3 {
@@ -52,5 +55,6 @@ pub fn part2(input: Vec<u32>) -> u32 {
     prev = curr;
   }
 
+  // Function completes in O(n)
   return res;
 }
