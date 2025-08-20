@@ -1,6 +1,6 @@
 use std::{fs::File, io::Read};
 
-const PART: &str = "part1";
+const PART: &str = "part2";
 pub fn solve(mut input: File) -> i32 {
   let mut input_str = String::new();
   input
@@ -46,26 +46,25 @@ pub fn part1(input: Vec<(&str, i32)>) -> i32 {
 }
 
 pub fn part2(input: Vec<(&str, i32)>) -> i32 {
-  // O(3n) which is just O(n)
-  let mut res: i32 = 0;
-  // let mut prev: u32 = 0;
-  // for i in 0..(input.len() - 2) {
-  //   let mut curr: u32 = 0;
-  //   for j in i..i+3 {
-  //     // print!("{} ", input[j]);
-  //     curr += input[j];
-  //   }
-  //   // println!();
+  // O(n)
+  let (mut pos, mut depth, mut aim): (i32, i32, i32) = (0, 0, 0);
+  for (command, unit) in input {
+    match command {
+      "forward" => {
+        pos += unit;
+        depth += aim * unit;
+      },
+      "up" => aim -= unit,
+      "down" => aim += unit,
+      _ => {
+        println!("No match!");
+        break;
+      }
+    }
 
-  //   if i != 0 {
-  //     if curr > prev {
-  //       res += 1;
-  //     }
-  //   }
-
-  //   prev = curr;
-  // }
+    // println!("{} {} {} {}", command, unit, pos, depth);
+  }
 
   // Function completes in O(n)
-  return res;
+  return pos * depth;
 }
