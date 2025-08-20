@@ -2,10 +2,12 @@ use std::fs::File;
 
 mod day1;
 mod day2;
+mod day3;
 
 #[allow(dead_code)]
+// Same main file from AOC2020
 fn main() {
-  let day = "day2";
+  let day = "day3";
   let input =
     File::open(format!("./inputs/{day}.txt"))
     .expect("Path not found.");
@@ -19,6 +21,7 @@ fn main() {
   let res  = match day {
     "day1" => ResultType::U32(day1::solve(input)),
     "day2" => ResultType::I32(day2::solve(input)),
+    "day3" => ResultType::U32(day3::solve(input)),
     _ => panic!("Day does not exist!"),
   };
 
