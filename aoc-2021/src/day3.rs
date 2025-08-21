@@ -85,79 +85,86 @@ pub fn part2(input: Vec<&str>) -> u32 {
       bin_num.chars().collect()
     }).collect();
 
-  let (mut o2, mut co2): (String, String) = (String::new(), String::new());
-  let (mut o2_flag, mut co2_flag) = (true, true);
+  let (mut o2_list, mut co2_list): (Vec<Vec<char>>, Vec<Vec<char>>) = (input.clone(), input.clone());
 
   // O(1)
   for i in 0..BIN_LEN {
-    // O(n)
-    let mut bin_num: String = String::new();
-    let (mut o2_ctr, mut co2_ctr): (i32, i32) = (0, 0);
-    let (mut o2_rec_ctr, mut co2_rec_ctr) = (0, 0);
+    // Total of O(4n) which is just O(n)
+    if o2_list.len() > 1 {
+      // O(n)
+      let o2_ctr = count_bits(&o2_list, i);
 
-    for j in 0..input.len() {
-      // print!("{} ", input[j][i]); By column access
-      bin_num = input[j].iter().collect();
-
-      if bin_num.starts_with(&o2) {
-        print!("{} ", bin_num);
-        o2_rec_ctr += 1;
-        o2_ctr += match input[j][i] {
-          '1' => 1,
-          '0' => -1,
-          _ => {
-            println!("No match!");
-            break;
-          }
-        }
-      }
-
-      if bin_num.starts_with(&co2) {
-        println!("{}", bin_num);
-        co2_rec_ctr += 1;
-        co2_ctr += match input[j][i] {
-          '1' => 1,
-          '0' => -1,
-          _ => {
-            println!("No match!");
-            break;
-          }
-        }
-      }
-    }
-
-    // println!("{} {} {} {}", o2_ctr, co2_ctr, o2_flag, co2_flag);
-
-    if o2_flag {
-      if o2_rec_ctr == 1 {
-        o2 = bin_num.clone();
-        o2_flag = false;
-      } else if o2_ctr > 0 {
-        o2.push('1');
-      } else if o2_ctr < 0 {
-        o2.push('0');
+      // O(n)
+      if o2_ctr >= 0 {
+        o2_list = o2_list
+          .drain(..)
+          .filter(|o2| {
+            o2[i] == '1'
+          })
+          .collect();
       } else {
-        o2.push('1');
+        o2_list = o2_list
+          .drain(..)
+          .filter(|o2| {
+            o2[i] == '0'
+          })
+          .collect();
       }
     }
 
-    if co2_flag {
-      if co2_rec_ctr == 1  {
-        co2 = bin_num.clone();
-        co2_flag = false;
-      } else if co2_ctr > 0 {
-        co2.push('0');
-      } else if co2_ctr < 0 {
-        co2.push('1');
+    if co2_list.len() > 1 {
+      // O(n)
+      let co2_ctr = count_bits(&co2_list, i);
+
+      // O(n)
+      if co2_ctr >= 0 {
+        co2_list = co2_list
+          .drain(..)
+          .filter(|co2| {
+            co2[i] == '0'
+          })
+          .collect();
       } else {
-        co2.push('0');
+        co2_list = co2_list
+          .drain(..)
+          .filter(|co2| {
+            co2[i] == '1'
+          })
+          .collect();
       }
     }
-
-    // println!("{} {}", o2, co2);
   }
 
-  // println!("{} {}", o2, co2);
-  let (o2, co2): (u32, u32) = (u32::from_str_radix(&o2, 2).unwrap(), u32::from_str_radix(&co2, 2).unwrap());
+  let (o2, co2): (String, String) = (
+    o2_list.last().unwrap().into_iter().collect(),
+    co2_list.last().unwrap().into_iter().collect()
+  );
+
+  // println!("O2: {:?}\n Co2: {:?}", o2_list.iter().collect(), co2_list);
+
+  let (o2, co2): (u32, u32) = (
+    u32::from_str_radix(&o2, 2).unwrap(),
+    u32::from_str_radix(&co2, 2).unwrap()
+  );
+
+  // Function completes in O(n)
   return o2 * co2;
+}
+
+pub fn count_bits(input: &Vec<Vec<char>>, pos: usize) -> i32 {
+  // O(n)
+  let mut ctr: i32 = 0;
+  for bin_num in input {
+    ctr += match bin_num[pos] {
+      '1' => 1,
+      '0' => -1,
+      _ => {
+        println!("No match!");
+        break;
+      }
+    };
+  }
+
+  // Function completes in O(n)
+  ctr
 }
