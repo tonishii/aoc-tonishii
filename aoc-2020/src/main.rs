@@ -9,10 +9,11 @@ mod day6;
 mod day7;
 mod day8;
 mod day9;
+mod day10;
 
 #[allow(dead_code)]
 fn main() {
-  let day = "day9";
+  let day = "day10";
   let input =
     File::open(format!("./inputs/{day}.txt"))
     .expect("Path not found.");
@@ -37,7 +38,7 @@ fn main() {
     "day7" => ResultType::U32(day7::solve(input)),
     "day8" => ResultType::I32(day8::solve(input)),
     "day9" => ResultType::U64(day9::solve(input)),
-
+    "day10" => ResultType::U32(day10::solve(input)),
     _ => panic!("Day does not exist!"),
   };
 
