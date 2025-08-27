@@ -1,7 +1,7 @@
 use std::{collections::HashMap, fs::File, io::Read};
 
 const START: u32 = 0;
-// const PART: &str = "part1";
+const PART: &str = "part1";
 pub fn solve(mut input: File) -> u32 {
   let mut input_str = String::new();
 
@@ -14,6 +14,14 @@ pub fn solve(mut input: File) -> u32 {
     .map(|s| s.parse().expect("Error in parsing."))
     .collect();
 
+  return if PART == "part1" { part1(input) } else { part2(input) };
+}
+
+pub fn part2(input: Vec<u32>) -> u32 {
+  return 0;
+}
+
+pub fn part1(input: Vec<u32>) -> u32 {
   let mut map: HashMap<u32, Vec<u32>> = HashMap::new();
   let (mut jolt_1, mut jolt_3): (u32, u32) = (0, 0);
 
@@ -72,3 +80,4 @@ pub fn solve(mut input: File) -> u32 {
   // Function completes in O(n) time
   return jolt_1 * (jolt_3 + 1);
 }
+

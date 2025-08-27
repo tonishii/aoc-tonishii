@@ -10,16 +10,17 @@ mod day7;
 mod day8;
 mod day9;
 mod day10;
+mod day11;
 
 #[allow(dead_code)]
 fn main() {
-  let day = "day10";
+  let day = "day11";
   let input =
     File::open(format!("./inputs/{day}.txt"))
     .expect("Path not found.");
 
   // let input =
-  //   File::open(format!("./tests/test{}.txt", &day[3..]))
+  //   File::open(format!("./tests/{day}.txt"))
   //   .expect("Path not found.");
 
   enum ResultType {
@@ -39,6 +40,7 @@ fn main() {
     "day8" => ResultType::I32(day8::solve(input)),
     "day9" => ResultType::U64(day9::solve(input)),
     "day10" => ResultType::U32(day10::solve(input)),
+    "day11" => ResultType::U32(day11::solve(input)),
     _ => panic!("Day does not exist!"),
   };
 
