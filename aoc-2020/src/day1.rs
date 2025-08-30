@@ -1,7 +1,7 @@
 use std::{collections::HashSet, fs::File, io::Read};
 
-const TARGET: u32 = 2002;
-const PART: &str = "part1";
+const TARGET: u32 = 2020;
+const PART: &str = "part2";
 pub fn solve(mut input: File) -> u32 {
   let mut input_str: String = String::new();
   input
@@ -17,27 +17,27 @@ pub fn solve(mut input: File) -> u32 {
   return if PART == "part1" { part1(input) } else { part2(input) };
 }
 
-fn old_part1(mut input: Vec<u32>) -> u32 {
-  input.sort(); // O(n * log(n))
+// fn old_part1(mut input: Vec<u32>) -> u32 {
+//   input.sort(); // O(n * log(n))
 
-  let (mut x, mut y) = (0, input.len() - 1);
+//   let (mut x, mut y) = (0, input.len() - 1);
 
-  // O(n)
-  loop {
-    let curr = input[x] + input[y];
-    if curr == TARGET {
-      break;
-    } else if curr < TARGET {
-      x += 1;
-    } else {
-      y -= 1;
-    }
-  }
+//   // O(n)
+//   loop {
+//     let curr = input[x] + input[y];
+//     if curr == TARGET {
+//       break;
+//     } else if curr < TARGET {
+//       x += 1;
+//     } else {
+//       y -= 1;
+//     }
+//   }
 
-  // Function completes in O(n * log(n))
-  println!("{} {}", input[x], input[y]);
-  return input[x] * input[y];
-}
+//   // Function completes in O(n * log(n))
+//   println!("{} {}", input[x], input[y]);
+//   return input[x] * input[y];
+// }
 
 fn part1(input: Vec<u32>) -> u32 {
   let mut set: HashSet<u32> = HashSet::new();
@@ -51,8 +51,7 @@ fn part1(input: Vec<u32>) -> u32 {
     }
 
     if set.contains(&(comp as u32)) {
-      println!("{:?}", set);
-      println!("{} {}", entry, set.get(&(comp as u32)).unwrap());
+      // println!("{} {}", entry, set.get(&(comp as u32)).unwrap());
       return entry * set.get(&(comp as u32)).unwrap();
     }
 
@@ -63,39 +62,30 @@ fn part1(input: Vec<u32>) -> u32 {
 }
 
 fn part2(mut input: Vec<u32>) -> u32 {
-  input.sort(); // O(n * log(n))
+  // O(n log n)
+  input.sort();
 
   // println!("{:?}", input);
-  let (mut x, mut y) = (0, input.len() - 1);
 
-  loop {
-    let curr = input[x] + input[y];
+  // O(n ^ 2)
+  for i in 0..input.len() {
+    let (mut low, mut high): (usize, usize) = (i + 1, input.len() - 1);
 
-    if x >= y {
-      return 0;
-    }
+    // Basically just a two sum so O(n)
+    while low < high {
+      let sum = input[i] + input[low] + input[high];
 
-    // println!("{}", curr);
-    if curr < TARGET {
-      // println!("LESS THAN {} {} {}", x, y, curr);
+      if sum == TARGET {
+        return input[i] * input[low] * input[high];
+      } else if sum > TARGET {
+        high -= 1;
+      } else {
+        low += 1;
 
-      // Iterate through 0 up until y to search for the smaller number
-      for i in 0..y {
-        let curr = input[x] + input[i] + input[y];
-        // println!("{} {} {} {}", x, i, y, curr);
-
-        if i == x {
-          continue;
-        } else if curr == TARGET {
-          return input[x] * input[i] * input[y];
-        } else if curr > TARGET {
-          break;
-        }
       }
-
-      x += 1;
-    } else {
-      y -= 1;
     }
   }
+
+  // Function completes in O(n ^ 2) time
+  return 0;
 }

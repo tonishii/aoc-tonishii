@@ -4,6 +4,7 @@ const FLOOR: char = '.';
 const EMPTY: char = 'L';
 const OCCUPIED: char = '#';
 const PART: &str = "part2";
+
 pub fn solve(mut input: File) -> u32 {
   let mut input_str = String::new();
   input
