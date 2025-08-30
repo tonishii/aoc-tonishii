@@ -1,10 +1,11 @@
-use std::{fs::File, io::Read};
+use std::{collections::HashSet, fs::File, io::Read};
 use regex::Regex;
 
-const PART: &str = "part2";
 const FIELDS: [&str; 7] = ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"];
 const MEASUREMENTS: [&str; 2] = ["cm", "in"];
 const EYE_COLOR: [&str; 7] = ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"];
+const PART: &str = "part2";
+
 pub fn solve(mut input: File) -> u32 {
   let mut input_str = String::new();
   input
@@ -14,7 +15,10 @@ pub fn solve(mut input: File) -> u32 {
   // Parse the lines: O(n)
   let input: Vec<String> = input_str
     .split("\n\n")
-    .map(|s| s.to_string())
+    .map(|s| {
+      let s = s.to_string();
+      s.replace('\n', " ")
+    })
     .collect();
 
   return if PART == "part1" { part1(input) } else { part2(input) };
@@ -36,46 +40,48 @@ fn part1(input: Vec<String>) -> u32 {
   return input.len() as u32 - res;
 }
 
-// byr (Birth Year) - four digits; at least 1920 and at most 2002.
-// iyr (Issue Year) - four digits; at least 2010 and at most 2020.
-// eyr (Expiration Year) - four digits; at least 2020 and at most 2030.
-// hgt (Height) - a number followed by either cm or in:
-//     If cm, the number must be at least 150 and at most 193.
-//     If in, the number must be at least 59 and at most 76.
-// hcl (Hair Color) - a # followed by exactly six characters 0-9 or a-f.
-// ecl (Eye Color) - exactly one of: amb blu brn gry grn hzl oth.
-// pid (Passport ID) - a nine-digit number, including leading zeroes.
-// cid (Country ID) - ignored, missing or not. Already known.
 fn part2(input: Vec<String>) -> u32 {
   // O(n * 7) which is just O(n)
+
   let mut res: u32 = 0;
   for passport in &input {
-    // let single_line = passport.replace('\n', " ");
-    // println!("{}", single_line);
+    // println!("{passport}");
 
+    let mut invalid = false;
+    let mut completed_fields: HashSet<&str> = HashSet::with_capacity(8);
     for field in passport.split(" ") {
-      let (curr_field, value) = field.split_once(':').unwrap();
+      // println!("{field}");
+      let (curr_field, value) = field
+        .split_once(':')
+        .unwrap();
 
-      let eval_res = if curr_field == "byr" {
-        eval_yr(value, 1920, 2002)
-      } else if curr_field == "iyr" {
-        eval_yr(value, 2010, 2020)
-      } else if curr_field == "eyr" {
-        eval_yr(value, 2020, 2030)
-      } else if curr_field == "hgt" {
-        eval_hgt(value)
-      } else if curr_field == "hcl" {
-        eval_hcl(value)
-      } else if curr_field == "ecl" {
-        eval_ecl(value)
-      } else if curr_field == "pid" {
-        eval_pid(value)
-      } else { false };
+      let eval_res = match curr_field {
+        "byr" => eval_yr(value, 1920, 2002),
+        "iyr" => eval_yr(value, 2010, 2020),
+        "eyr" => eval_yr(value, 2020, 2030),
+        "hgt" => eval_hgt(value),
+        "hcl" => eval_hcl(value),
+        "ecl" => eval_ecl(value),
+        "pid" => eval_pid(value),
+        "cid" => continue,
+        _ => false
+      };
 
-      if !eval_res {
-        res += 1;
+      // println!("{curr_field} {value} {eval_res}");
+
+      if !eval_res || !completed_fields.insert(curr_field) {
+        invalid = true;
         break;
       }
+    }
+
+    if invalid {
+      res += 1;
+      continue;
+    }
+
+    if !(completed_fields.len() == 7 || completed_fields.len() == 8) {
+      res += 1;
     }
   }
 
@@ -102,7 +108,8 @@ pub fn eval_hgt(value: &str) -> bool {
   let re = Regex::new(r"([0-9]+)([a-zA-Z]+)").unwrap();
 
   let Some(caps) = re.captures(value) else {
-    println!("No match");
+    // println!("{value}");
+    println!("No match!");
     return false;
   };
 
@@ -124,6 +131,7 @@ pub fn eval_hcl(value: &str) -> bool {
   let re = Regex::new(r"#([0-9a-f]+)").unwrap();
 
   let Some(caps) = re.captures(value) else {
+    // println!("{value}");
     println!("No match");
     return false;
   };
@@ -140,5 +148,13 @@ pub fn eval_ecl(value: &str) -> bool {
 }
 
 pub fn eval_pid(value: &str) -> bool {
-  value.len() == 9
+  let re = Regex::new(r"([0-9]+)").unwrap();
+
+  let Some(caps) = re.captures(value) else {
+    // println!("{value}");
+    println!("No match");
+    return false;
+  };
+
+  (&caps[1]).len() == 9
 }

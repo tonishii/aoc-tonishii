@@ -32,7 +32,7 @@ impl fmt::Display for ResultType {
 }
 
 fn main() {
-  let day = "day1";
+  let day = "day4";
   let input =
     File::open(format!("./inputs/{day}.txt"))
     .expect("Path not found.");
@@ -40,7 +40,6 @@ fn main() {
   // let input =
   //   File::open(format!("./tests/{day}.txt"))
   //   .expect("Path not found.");
-
 
   let res  = match day {
     "day1" => ResultType::U32(day1::solve(input)),
