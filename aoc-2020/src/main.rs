@@ -1,5 +1,5 @@
-use core::fmt;
 #[allow(dead_code)]
+use core::fmt;
 use std::fs::File;
 
 mod day1;
@@ -14,6 +14,8 @@ mod day9;
 mod day10;
 mod day11;
 mod day12;
+mod day13;
+mod day14;
 
 enum ResultType {
   U32(u32),
@@ -32,7 +34,7 @@ impl fmt::Display for ResultType {
 }
 
 fn main() {
-  let day = "day4";
+  let day = "day14";
   let input =
     File::open(format!("./inputs/{day}.txt"))
     .expect("Path not found.");
@@ -54,6 +56,8 @@ fn main() {
     "day10" => ResultType::U32(day10::solve(input)),
     "day11" => ResultType::U32(day11::solve(input)),
     "day12" => ResultType::U32(day12::solve(input)),
+    "day13" => ResultType::U32(day13::solve(input)),
+    "day14" => ResultType::U64(day14::solve(input)),
     _ => panic!("Day does not exist!"),
   };
 
