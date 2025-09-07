@@ -16,6 +16,7 @@ mod day11;
 mod day12;
 mod day13;
 mod day14;
+mod day15;
 
 enum ResultType {
   U32(u32),
@@ -34,7 +35,7 @@ impl fmt::Display for ResultType {
 }
 
 fn main() {
-  let day = "day14";
+  let day = "day15";
   let input =
     File::open(format!("./inputs/{day}.txt"))
     .expect("Path not found.");
@@ -58,6 +59,7 @@ fn main() {
     "day12" => ResultType::U32(day12::solve(input)),
     "day13" => ResultType::U32(day13::solve(input)),
     "day14" => ResultType::U64(day14::solve(input)),
+    "day15" => ResultType::U32(day15::solve(input)),
     _ => panic!("Day does not exist!"),
   };
 

@@ -4,7 +4,6 @@ use petgraph::{graph::NodeIndex, Direction, Graph};
 
 const START: &str = "shiny gold";
 const PART: &str = "part2";
-
 struct WeightedNode {
   name: String,
   count: u32,
