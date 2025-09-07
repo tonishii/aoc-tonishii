@@ -129,7 +129,7 @@ pub fn part1(input: Vec<Vec<char>>) -> u32 {
   return res;
 }
 
-pub fn print_2d(input: &Vec<Vec<char>>) {
+pub fn _print_2d(input: &Vec<Vec<char>>) {
   input.iter().for_each(|row| {
     for &char in row {
       print!("{char}");

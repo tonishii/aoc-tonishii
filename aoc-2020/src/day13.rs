@@ -29,9 +29,7 @@ pub fn solve(mut input: File) -> u32 {
   return if PART == "part1" { part1((timestamp_start, bus_ids)) } else { part2((timestamp_start, bus_ids)) };
 }
 
-pub fn part2(input: (u32, Vec<Option<u32>>)) -> u32 {
-
-
+pub fn part2(_input: (u32, Vec<Option<u32>>)) -> u32 {
   return 0;
 }
 
@@ -56,7 +54,8 @@ pub fn part1(input: (u32, Vec<Option<u32>>)) -> u32 {
     .min_by(|&(_, (_, val1)), &(_, (_, val2))| val1.total_cmp(val2))
     .unwrap();
 
-  let (mut i, mut timestamp_end): (u32, u32) = (1, min_bus_id);
+  let mut i: u32 = 1;
+  let mut timestamp_end: u32;
   // println!("{} {}", value, timestamp_end);
 
   // O(1)

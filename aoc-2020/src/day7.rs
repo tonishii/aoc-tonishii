@@ -1,11 +1,11 @@
 use std::{collections::{HashMap, HashSet, VecDeque}, fs::File, io::Read};
-use regex::Regex;
 use petgraph::{graph::NodeIndex, Direction, Graph};
+use regex::Regex;
 
 const START: &str = "shiny gold";
 const PART: &str = "part2";
+
 struct WeightedNode {
-  name: String,
   count: u32,
 }
 
@@ -154,7 +154,7 @@ fn get_or_insert_weighted_node(graph: &mut Graph<WeightedNode, ()>, nodes: &mut 
   if let Some(&idx) = nodes.get(new) {
     idx
   } else {
-    let idx = graph.add_node(WeightedNode { name: new.to_string(), count });
+    let idx = graph.add_node(WeightedNode { count });
     nodes.insert(new.to_string(), idx);
     idx
   }

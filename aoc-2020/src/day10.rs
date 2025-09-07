@@ -17,7 +17,7 @@ pub fn solve(mut input: File) -> u32 {
   return if PART == "part1" { part1(input) } else { part2(input) };
 }
 
-pub fn part2(input: Vec<u32>) -> u32 {
+pub fn part2(_input: Vec<u32>) -> u32 {
   return 0;
 }
 
